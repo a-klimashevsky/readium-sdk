@@ -255,6 +255,7 @@ LOCAL_SRC_FILES := \
 		ePub3/ePub/content_module_manager.cpp \
 		ePub3/ePub/credential_request.cpp \
 		ePub3/ePub/encryption.cpp \
+                ePub3/ePub/encryption_key.cpp \
 		ePub3/ePub/epub_collection.cpp \
 		ePub3/ePub/filter_chain.cpp \
 		ePub3/ePub/filter_manager_impl.cpp \

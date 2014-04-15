@@ -44,7 +44,25 @@ bool EncryptionInfo::ParseXML(shared_ptr<xml::Node> node)
     strings = xpath.Strings("./enc:CipherData/enc:CipherReference/@URI", node);
     if ( strings.empty() )
         return false;
+    strings = xpath.Strings("./dsig:KeyInfo/dsig:RetrievalMethod/@URI", node);
+    if (strings.empty())
+    {
+        return false;
+    }
+    strings[0].erase(0, 1);
+    _retrieval_method = strings[0];
+    strings = xpath.Strings("./dsig:KeyInfo/dsig:KeyIV", node);
+    if (strings.empty())
+    {
+        return false;
+    }
+    _keyIV = strings[0];
     
+    strings = xpath.Strings("./enc:CipherData/enc:CipherReference/@URI", node);
+    if (strings.empty())
+    {
+        return false;
+    }
     _path = strings[0];
     return true;
 }

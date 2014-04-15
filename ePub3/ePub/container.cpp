@@ -250,6 +250,14 @@ void Container::LoadEncryption()
         if ( encPtr->ParseXML(node) )
             _encryption.push_back(encPtr);
     }
+
+    xml::NodeSet keyNodes = xpath.Nodes("/ocf:encryption/enc:EncryptedKey");
+    if (nodes.empty())
+    {
+        return; // should be a hard error?
+    }
+
+    _key_info = new EncryptionKeyInfo(keyNodes.front());
 }
 shared_ptr<EncryptionInfo> Container::EncryptionInfoForPath(const string &path) const
 {
@@ -261,6 +269,32 @@ shared_ptr<EncryptionInfo> Container::EncryptionInfoForPath(const string &path) 
     
     return nullptr;
 }
+
+bool Container::IsContainerEncrypted() const
+{
+    return (_encryption.size() != 0);
+}
+
+bool Container::IsPathEncrypted(const ePub3::string &path) const
+{
+    for ( auto item : _encryption )
+    {
+        if ( item->Path() == path)
+        {
+            if (item->Retrieval_Method() != _key_info->Location())
+            {
+                fprintf(stderr, "Container::LoadEncryption(): RetrievalMethod URI %s for %s does not exist \n", item->Retrieval_Method().c_str(), item->Path().c_str());
+                return false;
+            }
+            
+            return true;
+        }
+        
+    }
+    
+    return false;
+}
+
 bool Container::FileExistsAtPath(const string& path) const
 {
 	return _archive->ContainsItem(path.stl_str());

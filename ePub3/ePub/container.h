@@ -24,6 +24,7 @@
 
 #include <ePub3/epub3.h>
 #include <ePub3/encryption.h>
+#include <ePub3/encryption_key.h>
 #include <ePub3/package.h>
 #include <ePub3/utilities/utfstring.h>
 #include <ePub3/utilities/owned_by.h>
@@ -139,6 +140,10 @@ public:
 
 	const string&                   Path()                  const   { return _path; }
     
+    /// Returns true if container is encrypted, or false if not
+    
+    virtual bool                    IsContainerEncrypted()  const;
+
     ///
     /// Retrieves the encryption information embedded in the container.
     virtual const EncryptionList&   EncryptionData()        const   { return _encryption; }
@@ -158,6 +163,15 @@ public:
 	 */
 	virtual bool					FileExistsAtPath(const string& path)		const;
     
+    /**
+     Retrieves the encryption information for a specific file within the container.
+     @param path A container-relative path to the item whose encryption information
+     to retrieve.
+     @result Returns true if container-relative path is encrypted, or false if not.
+     */
+
+    virtual bool                    IsPathEncrypted(const string& path) const;
+
     /**
      Obtains a pointer to a ReadStream for a specific file within the container.
      @param path A container-relative path to the file whose data to read.
@@ -190,7 +204,7 @@ protected:
     EncryptionList					_encryption;
 	std::shared_ptr<ContentModule>	_creator;
 	string							_path;
-    
+    EncryptionKeyInfo *             _key_info;
     ///
     /// Parses the file META-INF/encryption.xml into an EncryptionList.
     void							LoadEncryption();

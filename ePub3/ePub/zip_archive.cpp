@@ -107,7 +107,7 @@ public:
 
 	virtual size_t total_size() const { return _total_size; }
 	virtual size_t position() const { return _total_size - _file->bytes_left; }
-    
+        virtual ssize_t bytesLeft() const { return _file->bytes_left; }
 private:
     struct zip_file * _file;
 	size_t _total_size;

@@ -48,10 +48,17 @@ class EncryptionInfo : public PointerType<EncryptionInfo>, public OwnedBy<Contai
 	, public NativeBridge
 #endif
 {
+protected:
+    
+    ///
+    /// We should use http://www.w3.org/2001/04/xmlenc#kw-aes128 only
+    constexpr static const char * const  EncryptedDataAlgorithmID = "http://www.w3.org/2001/04/xmlenc#kw-aes128";
+    
 public:
     ///
     /// Encryption algorithms are URIs compared as strings.
     typedef string                  algorithm_type;
+    typedef string                  retrieval_uri;
     
 public:
     ///
@@ -76,6 +83,13 @@ public:
     bool            ParseXML(shared_ptr<xml::Node> node);
     
     ///
+    /// Returns a retrieval method URI
+    virtual const retrieval_uri&    Retrieval_Method()                      const   { return _retrieval_method; }
+    
+    virtual void                    SetRetrieval_Method(const retrieval_uri& ret)   { _retrieval_method = ret; }
+    virtual void                    SetRetrieval_Method(retrieval_uri&& ret)        { _retrieval_method = ret; }
+                                                                                                                           
+    ///
     /// Returns an algorithm URI as defined in XML-ENC or OCF.
     /// @see http://www.w3.org/TR/xmlenc-core1/#sec-Table-of-Algorithms
     /// @see http://www.idpf.org/epub/30/spec/epub30-ocf.html#fobfus-specifying
@@ -94,9 +108,19 @@ public:
     virtual void                    SetPath(const string& path)                     { _path = path; }
     virtual void                    SetPath(string&& path)                          { _path = path; }
     
+    ///
+    /// Returns an initialization vector
+    virtual const string&           KeyIV()                                 const   { return _keyIV; }
+    ///
+    /// Assigns a Container-relative path to an encrypted resource.
+    virtual void                    SetKeyIV(const string& iv)                     { _keyIV = iv; }
+    virtual void                    SetKeyIV(string&& iv)                          { _keyIV = iv; }
+    
 protected:
-    algorithm_type  _algorithm;     ///< The algorithm identifier, as per XML-ENC or OCF.
-    string          _path;          ///< The Container-relative path to an encrypted resource.
+    retrieval_uri   _retrieval_method;  ///< RetrievalMethod URI.
+    algorithm_type  _algorithm;         ///< The algorithm identifier, as per XML-ENC or OCF.
+    string          _path;              ///< The Container-relative path to an encrypted resource.
+    string          _keyIV;             ///< Initialization vector
 
 };
 
