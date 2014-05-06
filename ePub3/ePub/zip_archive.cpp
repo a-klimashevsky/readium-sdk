@@ -69,6 +69,7 @@ public:
     virtual bool operator !() const { return _file == nullptr || _file->bytes_left == 0; }
     virtual ssize_t read(void* p, size_t len) const { return zip_fread(_file, p, len); }
     
+    virtual ssize_t bytesLeft() const { return _file->bytes_left; }
 private:
     struct zip_file * _file;
 };

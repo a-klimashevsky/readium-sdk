@@ -347,6 +347,8 @@ public:
      */
     virtual ssize_t read(void *p, size_t len) const { return 0; }
     
+    virtual ssize_t bytesLeft() const { return 0; }
+    
 protected:
     ArchiveReader() = default;
     ArchiveReader(const ArchiveReader &) = delete;

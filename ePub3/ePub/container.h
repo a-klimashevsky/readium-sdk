@@ -24,6 +24,7 @@
 
 #include <ePub3/epub3.h>
 #include <ePub3/encryption.h>
+#include <ePub3/encryption_key.h>
 #include <ePub3/package.h>
 #include <ePub3/utilities/utfstring.h>
 #include <libxml/tree.h>
@@ -96,6 +97,10 @@ public:
     /// The OCF version of the container document.
     virtual string                  Version()               const;
     
+    /// Returns true if container is encrypted, or false if not
+    
+    virtual bool                    IsContainerEncrypted()  const;
+    
     ///
     /// Retrieves the encryption information embedded in the container.
     virtual const EncryptionList&   EncryptionData()        const   { return _encryption; }
@@ -109,6 +114,19 @@ public:
     virtual const EncryptionInfo*   EncryptionInfoForPath(const string& path)   const;
     
     /**
+     Retrieves the encryption information for a specific file within the container.
+     @param path A container-relative path to the item whose encryption information
+     to retrieve.
+     @result Returns true if container-relative path is encrypted, or false if not.
+     */
+
+    virtual bool                    IsPathEncrypted(const string& path)         const;
+    ///
+    /// Retrieves the encryption key information embedded in the container.
+    
+    virtual const EncryptionKeyInfo* KeyInfo()              const { return _key_info; }
+    
+    /**
      Obtains a pointer to a ReadStream for a specific file within the container.
      @param path A container-relative path to the file whose data to read.
      @result A std::unique_ptr for a new stream to the specified file, or `nullptr`
@@ -117,11 +135,11 @@ public:
     virtual Auto<ByteStream>        ReadStreamAtPath(const string& path)        const;
     
 protected:
-    Archive *       _archive;
-    xmlDocPtr       _ocf;
-    PackageList     _packages;
-    EncryptionList  _encryption;
-    
+    Archive *           _archive;
+    xmlDocPtr           _ocf;
+    PackageList         _packages;
+    EncryptionList      _encryption;
+    EncryptionKeyInfo * _key_info;
     ///
     /// Parses the file META-INF/encryption.xml into an EncryptionList.
     void            LoadEncryption();

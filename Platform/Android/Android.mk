@@ -160,7 +160,7 @@ LOCAL_C_INCLUDES += ${shell find $(LOCAL_PATH)/ePub3/xml -type d}
 LOCAL_C_INCLUDES += ${shell find $(LOCAL_PATH)/ePub3/ePub -type d}
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/Platform/Android/src
 LOCAL_STATIC_LIBRARIES := xml2 crypto boost_regex
-LOCAL_LDLIBS := -lz -landroid
+LOCAL_LDLIBS := -lz -landroid -llog
 LOCAL_SRC_FILES := \
 		ePub3/ThirdParty/libzip/mkstemp.c \
 		ePub3/ThirdParty/libzip/zip_add.c \
@@ -227,6 +227,7 @@ LOCAL_SRC_FILES := \
 		ePub3/xml/tree/element.cpp \
 		ePub3/ePub/zip_archive.cpp \
 		ePub3/ePub/archive.cpp \
+		ePub3/ePub/encryption_key.cpp \
 		ePub3/ePub/container.cpp \
 		ePub3/ePub/package.cpp \
 		ePub3/ePub/archive_xml.cpp \
@@ -271,6 +272,12 @@ LOCAL_SRC_FILES := \
 		ePub3/utilities/ring_buffer.cpp \
 		ePub3/utilities/run_loop_android.cpp \
 		Platform/Android/src/jni_cache_dir.c \
+		Platform/Android/src/com_readium_EPubJNI.cpp \
+		Platform/Android/src/com_readium_EPubPackage.cpp \
+		Platform/Android/src/com_readium_EPubSpinelItem.cpp \
+		Platform/Android/src/com_readium_ResourceStream.cpp \
+		Platform/Android/src/com_readium_NavigationElement.cpp \
+		Platform/Android/src/com_readium_ManifestItem.cpp \
 		Platform/Android/src/backup_atomics.cpp
 
 include $(BUILD_SHARED_LIBRARY)

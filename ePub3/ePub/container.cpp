@@ -121,27 +121,76 @@ void Container::LoadEncryption()
         return;
     
     XPathWrangler xpath(enc, {{"enc", XMLENCNamespaceURI}, {"ocf", OCFNamespaceURI}});
+    
     xmlNodeSetPtr nodes = xpath.Nodes("/ocf:encryption/enc:EncryptedData");
     if ( nodes == nullptr || nodes->nodeNr == 0 )
+    {
+        fprintf(stderr, "Container::LoadEncryption() error: encryption.xml does not contain enc:EncryptedData nodes \n");
         return;     // should be a hard error?
+    }
     
     for ( size_t i = 0; i < nodes->nodeNr; i++ )
     {
         _encryption.emplace_back(new EncryptionInfo(nodes->nodeTab[i]));
     }
     
+    xmlNodeSetPtr keyNodes = xpath.Nodes("/ocf:encryption/enc:EncryptedKey");
+    if (keyNodes == nullptr || keyNodes->nodeNr == 0 || keyNodes->nodeNr > 1)
+    {
+        fprintf(stderr, "Container::LoadEncryption() error: encryption.xml does not contain enc:EncryptedKey node \n");
+        return; // should be a hard error?
+    }
+    
+    _key_info = new EncryptionKeyInfo(keyNodes->nodeTab[0]);
+
     xmlXPathFreeNodeSet(nodes);
 }
+
+bool Container::IsContainerEncrypted() const
+{
+    return (_encryption.size() != 0);
+}
+
 const EncryptionInfo* Container::EncryptionInfoForPath(const string &path) const
 {
     for ( auto item : _encryption )
     {
-        if ( item->Path() == path )
+        if ( item->Path() == path)
+        {
+            if (item->Retrieval_Method() != _key_info->Location())
+            {
+                fprintf(stderr, "Container::LoadEncryption(): RetrievalMethod URI %s for %s does not exist \n", item->Retrieval_Method().c_str(), item->Path().c_str());
+                return nullptr;
+            }
+            
             return item;
+        }
+        
     }
     
     return nullptr;
 }
+
+bool Container::IsPathEncrypted(const ePub3::string &path) const
+{
+    for ( auto item : _encryption )
+    {
+        if ( item->Path() == path)
+        {
+            if (item->Retrieval_Method() != _key_info->Location())
+            {
+                fprintf(stderr, "Container::LoadEncryption(): RetrievalMethod URI %s for %s does not exist \n", item->Retrieval_Method().c_str(), item->Path().c_str());
+                return false;
+            }
+            
+            return true;
+        }
+        
+    }
+    
+    return false;
+}
+
 Auto<ByteStream> Container::ReadStreamAtPath(const string &path) const
 {
     return _archive->ByteStreamAtPath(path.stl_str());

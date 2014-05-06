@@ -309,6 +309,10 @@
 		ABF2D9A816682E1E0036B8CA /* spine.h in Headers */ = {isa = PBXBuildFile; fileRef = ABF2D9A616682E1E0036B8CA /* spine.h */; };
 		ABF2D9AC1668301D0036B8CA /* manifest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABF2D9AA1668301D0036B8CA /* manifest.cpp */; };
 		ABF2D9AD1668301D0036B8CA /* manifest.h in Headers */ = {isa = PBXBuildFile; fileRef = ABF2D9AB1668301D0036B8CA /* manifest.h */; };
+		CE39B6D21775F4B300A4FE55 /* encryption_key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE39B6D01775F4B300A4FE55 /* encryption_key.cpp */; };
+		CE39B6D31775F4B300A4FE55 /* encryption_key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE39B6D01775F4B300A4FE55 /* encryption_key.cpp */; };
+		CE39B6D41775F4B300A4FE55 /* encryption_key.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE39B6D01775F4B300A4FE55 /* encryption_key.cpp */; };
+		CE39B6D51775F4B300A4FE55 /* encryption_key.h in Headers */ = {isa = PBXBuildFile; fileRef = CE39B6D11775F4B300A4FE55 /* encryption_key.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -748,6 +752,8 @@
 		ABF2D9A616682E1E0036B8CA /* spine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spine.h; sourceTree = "<group>"; };
 		ABF2D9AA1668301D0036B8CA /* manifest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = manifest.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		ABF2D9AB1668301D0036B8CA /* manifest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = manifest.h; sourceTree = "<group>"; };
+		CE39B6D01775F4B300A4FE55 /* encryption_key.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = encryption_key.cpp; sourceTree = "<group>"; };
+		CE39B6D11775F4B300A4FE55 /* encryption_key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = encryption_key.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1379,6 +1385,8 @@
 				AB95447C16B9730B00EFD2FD /* content_handler.h */,
 				AB6AC727168E05A2000DE924 /* encryption.cpp */,
 				AB6AC728168E05A3000DE924 /* encryption.h */,
+				CE39B6D01775F4B300A4FE55 /* encryption_key.cpp */,
+				CE39B6D11775F4B300A4FE55 /* encryption_key.h */,
 				AB6AC734169225E2000DE924 /* signatures.cpp */,
 				AB6AC735169225E3000DE924 /* signatures.h */,
 			);
@@ -1587,6 +1595,7 @@
 				AB5D104617209D38001D3C95 /* unchecked.h in Headers */,
 				AB5D104717209D38001D3C95 /* utf8.h in Headers */,
 				AB5D104E1721A722001D3C95 /* ref_counted.h in Headers */,
+				CE39B6D51775F4B300A4FE55 /* encryption_key.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1721,6 +1730,7 @@
 				AB95448C16BC28F300EFD2FD /* switch_preproc_tests.cpp in Sources */,
 				AB95448E16BC539200EFD2FD /* object_preproc_tests.cpp in Sources */,
 				AB17B29B170C872E00FD5917 /* font_obfuscation_tests.cpp in Sources */,
+				CE39B6D41775F4B300A4FE55 /* encryption_key.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1837,6 +1847,7 @@
 				3418BA7D16C4151E009AA7EF /* ring_buffer.cpp in Sources */,
 				ABA88FD916C4415D00F2014B /* ios_get_progname.m in Sources */,
 				AB17B29F171301C800FD5917 /* run_loop_cf.cpp in Sources */,
+				CE39B6D31775F4B300A4FE55 /* encryption_key.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1952,6 +1963,7 @@
 				ABA88FC316C1534900F2014B /* byte_stream.cpp in Sources */,
 				ABA88FD216C2B4ED00F2014B /* ring_buffer.cpp in Sources */,
 				AB17B29E171301C800FD5917 /* run_loop_cf.cpp in Sources */,
+				CE39B6D21775F4B300A4FE55 /* encryption_key.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

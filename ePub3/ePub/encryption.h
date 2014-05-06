@@ -42,10 +42,17 @@ EPUB3_BEGIN_NAMESPACE
  */
 class EncryptionInfo
 {
+protected:
+    
+    ///
+    /// We should use http://www.w3.org/2001/04/xmlenc#kw-aes128 only
+    constexpr static const char * const  EncryptedDataAlgorithmID = "http://www.w3.org/2001/04/xmlenc#kw-aes128";
+    
 public:
     ///
     /// Encryption algorithms are URIs compared as strings.
     typedef string                  algorithm_type;
+    typedef string                  retrieval_uri;
     
 public:
     ///
@@ -60,12 +67,19 @@ public:
                 EncryptionInfo(xmlNodePtr node);
     ///
     /// Copy constructor.
-                EncryptionInfo(const EncryptionInfo& o) : _algorithm(o._algorithm), _path(o._path) {}
+                EncryptionInfo(const EncryptionInfo& o) : _algorithm(o._algorithm), _path(o._path), _retrieval_method(o._retrieval_method), _keyIV(o._keyIV) {}
     ///
     /// Move constructor.
-                EncryptionInfo(EncryptionInfo&& o) : _algorithm(std::move(o._algorithm)), _path(std::move(o._path)) {}
+    EncryptionInfo(EncryptionInfo&& o) : _algorithm(std::move(o._algorithm)), _path(std::move(o._path)), _retrieval_method(std::move(o._retrieval_method)), _keyIV(std::move(o._keyIV)) {}
     virtual     ~EncryptionInfo() {}
     
+    ///
+    /// Returns a retrieval method URI
+    virtual const retrieval_uri&    Retrieval_Method()                      const   { return _retrieval_method; }
+    
+    virtual void                    SetRetrieval_Method(const retrieval_uri& ret)   { _retrieval_method = ret; }
+    virtual void                    SetRetrieval_Method(retrieval_uri&& ret)        { _retrieval_method = ret; }
+                                                                                                                           
     ///
     /// Returns an algorithm URI as defined in XML-ENC or OCF.
     /// @see http://www.w3.org/TR/xmlenc-core1/#sec-Table-of-Algorithms
@@ -85,9 +99,19 @@ public:
     virtual void                    SetPath(const string& path)                     { _path = path; }
     virtual void                    SetPath(string&& path)                          { _path = path; }
     
+    ///
+    /// Returns an initialization vector
+    virtual const string&           KeyIV()                                 const   { return _keyIV; }
+    ///
+    /// Assigns a Container-relative path to an encrypted resource.
+    virtual void                    SetKeyIV(const string& iv)                     { _keyIV = iv; }
+    virtual void                    SetKeyIV(string&& iv)                          { _keyIV = iv; }
+    
 protected:
-    algorithm_type  _algorithm;     ///< The algorithm identifier, as per XML-ENC or OCF.
-    string          _path;          ///< The Container-relative path to an encrypted resource.
+    retrieval_uri   _retrieval_method;  ///< RetrievalMethod URI.
+    algorithm_type  _algorithm;         ///< The algorithm identifier, as per XML-ENC or OCF.
+    string          _path;              ///< The Container-relative path to an encrypted resource.
+    string          _keyIV;             ///< Initialization vector
 
 };
 
