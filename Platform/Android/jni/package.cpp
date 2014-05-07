@@ -70,6 +70,10 @@ static const char *javaPackage_createPackageMethodName = "createPackage";
 static const char *javaPackage_createPackageSignature = "(J)Lorg/readium/sdk/android/Package;";
 static const int BUFFER_SIZE = 8192;
 
+static const char *java_class_ResourceInputStream_name = "org/readium/sdk/android/util/ResourceInputStream";
+static const char *java_method_ResourceInputStream_createResourceInputStream_name = "createResourceInputStream";
+static const char *java_method_ResourceInputStream_createResourceInputStream_sign = "(JJ)Lorg/readium/sdk/android/util/ResourceInputStream;";
+
 
 /*
  * Internal variables
@@ -633,6 +637,7 @@ JNIEXPORT jobject JNICALL Java_org_readium_sdk_android_Package_nativeGetSpineIte
 		env->DeleteLocalRef(pageSpread);
 		env->DeleteLocalRef(renditionLayout);
 		env->DeleteLocalRef(spineItem);
+		env->DeleteLocalRef(media_overlay_id);
 
     } while ((spine = spine->Next()) != nullptr);
 
@@ -729,8 +734,9 @@ JNIEXPORT jobject JNICALL Java_org_readium_sdk_android_Package_nativeInputStream
     auto byteStream = PCKG(pckgPtr)->ReadStreamForItemAtPath(path);
     ResourceStream *stream = new ResourceStream(byteStream);
 
-    jobject inputStream = javaResourceInputStream_createResourceInputStream(env, stream, (int) archiveInfo.UncompressedSize());
-
+    jobject inputStream = 
+	env->CallStaticObjectMethod(javaJavaObjectsFactoryClass, createResourceStream_ID,
+    			(jlong) stream, (jlong) archiveInfo.UncompressedSize());
 	return inputStream;
 }
 

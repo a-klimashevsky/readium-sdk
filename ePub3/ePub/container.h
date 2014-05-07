@@ -172,6 +172,11 @@ public:
 
     virtual bool                    IsPathEncrypted(const string& path) const;
 
+    ///
+    /// Retrieves the encryption key information embedded in the container.
+    
+    virtual const EncryptionKeyInfo* KeyInfo()              const { return _key_info; }
+
     /**
      Obtains a pointer to a ReadStream for a specific file within the container.
      @param path A container-relative path to the file whose data to read.

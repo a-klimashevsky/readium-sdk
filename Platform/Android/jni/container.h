@@ -69,6 +69,38 @@ void javaContainer_addPackageToContainer(JNIEnv *env, jobject container, jlong p
 JNIEXPORT void JNICALL
 Java_org_readium_sdk_android_Container_nativeLoadData(JNIEnv* env, jobject thiz, jlong pckgPtr);
 
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeGetCipher
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_readium_sdk_android_Container_nativeGetCipher
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeGetKeyIV
+ * Signature: (JLjava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_readium_sdk_android_Container_nativeGetKeyIV
+  (JNIEnv *, jobject, jlong, jstring);
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeIsPathEncrypted
+ * Signature: (JLjava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_readium_sdk_android_Container_nativeIsPathEncrypted
+  (JNIEnv *, jobject, jlong, jstring);
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeIsEncrypted
+ * Signature: (J)Z;
+ */
+JNIEXPORT jboolean JNICALL Java_org_readium_sdk_android_Container_nativeIsEncrypted
+  (JNIEnv *, jobject, jlong);
+
 
 #ifdef __cplusplus
 }

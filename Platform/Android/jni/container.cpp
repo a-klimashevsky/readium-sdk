@@ -26,7 +26,7 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
-
+#include "jni/jni.h"
 #include "epub3.h"
 #include "helpers.h"
 #include "container.h"
@@ -34,6 +34,10 @@
 
 
 using namespace std;
+
+
+//#define CONT    (*((shared_ptr<ePub3::Container>*)contnrPtr))
+#define CONT(contnrPtr)    (static_pointer_cast<ePub3::Container>(jni::Pointer(contnrPtr).getPtr()))
 
 
 #ifdef __cplusplus
@@ -117,6 +121,51 @@ void javaContainer_addPackageToContainer(JNIEnv *env, jobject container, jlong p
  * Package: org.readium.sdk.android
  * Class: Container
  */
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeGetCipher
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_readium_sdk_android_Container_nativeGetCipher
+  (JNIEnv *env, jobject thiz, jlong contPtr){
+	jni::StringUTF str(env, (std::string&) CONT(contPtr)->KeyInfo()->Cipher().stl_str());
+	return (jstring) str;
+}
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeGetKeyIV
+ * Signature: (JLjava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_org_readium_sdk_android_Container_nativeGetKeyIV
+  (JNIEnv *env, jobject thiz, jlong contPtr, jstring jPath){
+	char *path = env->GetStringUTFChars(jPath, NULL);
+	jni::StringUTF str(env, (std::string&) CONT(contPtr)->EncryptionInfoForPath(path)->KeyIV().stl_str());
+	return (jstring) str; 
+}
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeIsPathEncrypted
+ * Signature: (JLjava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_org_readium_sdk_android_Container_nativeIsPathEncrypted
+  (JNIEnv *env, jobject thiz, jlong contPtr, jstring jPath){
+	char *path = env->GetStringUTFChars(jPath, NULL);
+	return (jboolean) CONT(contPtr)->IsPathEncrypted(path);
+}
+
+/*
+ * Class:     org_readium_sdk_android_Container
+ * Method:    nativeIsEncrypted
+ * Signature: (J)Z;
+ */
+JNIEXPORT jboolean JNICALL Java_org_readium_sdk_android_Container_nativeIsEncrypted
+  (JNIEnv *env, jobject thiz, jlong contPtr){
+	return (jboolean) CONT(contPtr)->IsContainerEncrypted();
+}
+
 
 /*
  * Class:     org_readium_sdk_android_Container

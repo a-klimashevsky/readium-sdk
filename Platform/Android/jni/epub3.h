@@ -71,7 +71,7 @@ extern jmethodID addElementToParent_ID;
 extern jmethodID createManifestItemList_ID;
 extern jmethodID createManifestItem_ID;
 extern jmethodID addManifestItemToList_ID;
-
+extern jmethodID createResourceStream_ID;
 
 /*
  * Exported functions

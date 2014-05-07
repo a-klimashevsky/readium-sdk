@@ -67,6 +67,8 @@ static const char *javaEPub3_createBufferSignature = "(I)Ljava/nio/ByteBuffer;";
 static const char *javaEPub3_appendBytesToBufferMethodName = "appendBytesToBuffer";
 static const char *javaEPub3_appendBytesToBufferSignature = "(Ljava/nio/ByteBuffer;[B)V";
 
+static const char *java_method_ResourceInputStream_createResourceInputStream_name = "createResourceInputStream";
+static const char *java_method_ResourceInputStream_createResourceInputStream_sign = "(JJ)Lorg/readium/sdk/android/util/ResourceInputStream;";
 
 /*
  * Exported variables
@@ -90,7 +92,7 @@ jmethodID addElementToParent_ID;
 jmethodID createManifestItemList_ID;
 jmethodID createManifestItem_ID;
 jmethodID addManifestItemToList_ID;
-
+jmethodID createResourceStream_ID;
 
 /*
  * Internal variables
@@ -292,6 +294,9 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	INIT_STATIC_METHOD_ID_RETVAL(addManifestItemToList_ID, javaJavaObjectsFactoryClass, javaJavaObjectsFactoryClassName,
 			"addManifestItemToList", "(Ljava/util/List;Lorg/readium/sdk/android/ManifestItem;)V", ONLOAD_ERROR);
 
+	INIT_STATIC_METHOD_ID_RETVAL(createResourceStream_ID, javaJavaObjectsFactoryClass, javaJavaObjectsFactoryClassName,
+			java_method_ResourceInputStream_createResourceInputStream_name, 
+			java_method_ResourceInputStream_createResourceInputStream_sign, ONLOAD_ERROR);
 	// Return the JNI version this library wants to use
     return JNI_VERSION;
 }
